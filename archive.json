@@ -1,0 +1,189 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2023-08-15T00:31:54.943881+00:00",
+  "repo": "trustoverip/tswg-ptel-specification",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOKAikBc5tFIX_",
+      "title": "Fix references to WoT specs and update to ToIP",
+      "url": "https://github.com/trustoverip/tswg-ptel-specification/issues/2",
+      "state": "OPEN",
+      "author": "m00sey",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-07-31T21:31:54Z",
+      "updatedAt": "2023-07-31T21:31:54Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOKAikBc5tKvNe",
+      "title": "https://github.com/WebOfTrust/ietf-ptel/issues/2",
+      "url": "https://github.com/trustoverip/tswg-ptel-specification/issues/3",
+      "state": "OPEN",
+      "author": "m00sey",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "https://github.com/WebOfTrust/ietf-ptel/issues/2",
+      "createdAt": "2023-08-01T15:28:16Z",
+      "updatedAt": "2023-08-01T15:28:16Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOKAikBc5twebr",
+      "title": "Adding rotation and transfer semantics to credential TEL",
+      "url": "https://github.com/trustoverip/tswg-ptel-specification/issues/4",
+      "state": "OPEN",
+      "author": "pfeairheller",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Adding semantics to PTEL for rotation and transfer.\r\n- Two additional semantics\r\n  - Rotation (non-cooperative transfer)\r\n    - Control stays within the same KEL and the same TEL\r\n      - Use case: as a did:webs controller, AID is associated with domain names in an ACDC, to transfer to a new list, rotate the TEL to point to a new ACDC with a new list. The Issuer of the new ACDC is the same Issuer.  The new ACDC can have an edge pointing back to the old ACDC to enable walking backwards between ACDCs.\r\n      - Synonymous with duplicity detection in the KEL.\r\n         - Watchers could watch both KELs and TELs.\r\n         - If a KEL is analogous to a shared ledger a TEL for that KEL is analogous to a rollup on a shared ledger.\r\n\r\n      - Currently TELs only have iss/rev\r\n      - ISSUE: rotating to a blank list could be considered a revocation\r\n         - ISSUE: not using rev and rot in the same TEL\r\n         - ISSUE: possible config option for (`dnr` do not rotate, like `dnd` do not delegate in KEL)\r\n   - Transfer (Cooperative like delegation)\r\n      - Transferring control between two KELs and two TELs\r\n      - Chain of custody semantic of a data supply chain that consists of linked ACDCs\r\n      - **At any point in time, only one controller is authorized to append to the data supply chain.**\r\n      - Security comes from the ability for a validator to detect a duplicitous appendage to the data supply chain (via the `i2i` operator).\r\n      - Issue an ACDC, transfer registry for tracking control of ability to chain to the ACDC\r\n         - Move the control of the ability to append only one entity can append to the chain\r\n         - (I'll review the recording and try summarize)\r\n      - The originating ACDC that originates the data supply chain has an Issuer and Issuee.  For example, the originating ACDC could be a bill of lading (or manifest for Griff).   \r\n      - Issuer is originator, the SAID of that ACDC is the identifier of the originating document.  \r\n      - SAID of the credential registry is the global identifier for that issuer to originate any number of supply chains.  \r\n      - The SAID of the TEL which is the SAID of the issuance event is the registry for a given supply chain. \r\n      - This is the use case for shared backers for the credential registry.  But could have non-shared backers for availability reasons because the issuance rate on this TEL might be much higher than the issuance rate on the KEL.  The TEL witnesses become watchers of the KEL witnesses.  Tiered availability architecture this way.\r\n      - This architecture is amenable to scalability solutions that become TELs of TELs of ... KELs\r\n      - The designated issuee is now the singular controller who is solely authorized to append to the data supply chain.  The designated issue now creates a new ACDC in that ACDC, the issuer is the prior issuee of the originating ACDC, this new issuer designates the next issuer in that ACDC by declaring them the new issuee.  The new ACDC has an edge with the `i2i` operator that points back to the originating ACDC.  The semantics of the field labels in the schema for the edge indicate that this is part of a data supply chain not a delegation.  This represents the \"hand off of the goods\"\r\n      - Anyone in the chain can revoke their ACDC (hand off) in the chain and break the data supply chain, but the EGF of your ecosystem defines the rules around which anyone in the chain can revoke their credential if at all.\r\n      - The issuer of the new ACDC in the chain issues it to a TEL that they control.  The SAID of that TEL event is then provided to the originating Issuer.\r\n      - The originating Issuer now issues a transfer event that references BOTH the SAID of the new credential registry and the SAID of the ACDC.  (Look up of the TEL for the new ACDC is provided by an index of the TEL events in the registry by ACDC SAID.).",
+      "createdAt": "2023-08-08T14:23:32Z",
+      "updatedAt": "2023-08-13T15:09:45Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "pfeairheller",
+          "authorAssociation": "NONE",
+          "body": "There are two features that cooperative discovery provides.  One is duplicity detectability.  A two way commitment to the each ACDC that is the newly appended data supply chain.  And the second is that each stage in the data supply chain, the TEL that governs that stage provides forward discovery of the next stage.  So the data supply chain of custody can be discovered either forward or backwards without having to maintain a central repository.\r\n\r\n(This is why the transfer event should contain two SAIDs, credential registry SAID and the ACDC SAID.  The TEL event SAID can be looked up because the credential registry MUST maintain an index of TEL events by their ACDC SAID.).",
+          "createdAt": "2023-08-08T18:08:30Z",
+          "updatedAt": "2023-08-08T18:08:30Z"
+        },
+        {
+          "author": "pfeairheller",
+          "authorAssociation": "NONE",
+          "body": "This structure means that, because TEL events are anchored in the issuers KELs there is no need for the Issuer to sign the ACDC.",
+          "createdAt": "2023-08-08T18:11:23Z",
+          "updatedAt": "2023-08-08T18:11:23Z"
+        },
+        {
+          "author": "pfeairheller",
+          "authorAssociation": "NONE",
+          "body": "All of the text in this original issue and subsequent comments above are the result of direct dictation from @SmithSamuelM ",
+          "createdAt": "2023-08-08T18:14:31Z",
+          "updatedAt": "2023-08-08T18:14:31Z"
+        },
+        {
+          "author": "SmithSamuelM",
+          "authorAssociation": "NONE",
+          "body": "An important property/feature of the requirement for the TEL host to maintain an index that maps each ACDC SAID to the TEL that the ACDC appears in, enables a given TEL to have multiple rotation or transfer events that can all be found from any one of the ACDCs in that TEL. This future proofs any given TEL with respect to discovery for any new types of TEL events that may be added in future versions of the PTEL specification",
+          "createdAt": "2023-08-08T21:54:34Z",
+          "updatedAt": "2023-08-08T21:54:34Z"
+        },
+        {
+          "author": "pfeairheller",
+          "authorAssociation": "NONE",
+          "body": "Trying to capture this in a few credentials and TEL events as an example:\r\n\r\nOriginator ACDC Bill Of Lading Credential\r\n```json\r\n{\r\n  \"v\": \"ACDC10JSON000197_\",\r\n  \"d\": \"EIO9uC3K6MvyjFD-RB3RYW3dfL49kCyz3OPqv3gi1dek\",\r\n  \"i\": \"EIqTaQiZw73plMOq8pqHTi9BDgDrrE7iE9v2XfN2Izze\",\r\n  \"ri\": \"EACehJRd0wfteUAJgaTTJjMSaQqWvzeeHqAMMqxuqxU4\",\r\n  \"s\": \"EFgnk_c08WmZGgv9_mpldibRuqFMTQN-rAgtD-TCOwbs\",\r\n  \"a\": {\r\n    \"d\": \"EGJZo3pDwzIQHw7nZuuJ2dMCigwnVaosVFBDH4JiQy3e\",\r\n    \"dt\": \"2021-06-27T21:26:21.233257+00:00\",\r\n    \"i\": \"EHgwVwQT15OJvilVvW57HE4w0-GPs_Stj2OFoAHZSysY\",\r\n    \"billOfLadingItems\": [\"Sandwich\"]\r\n  }\r\n}\r\n```\r\n\r\nOriginator TEL Credential Registry Inception Event:\r\n```json\r\n{\r\n  \"v\": \"KERI10JSON000113_\",\r\n  \"t\": \"vcp\",\r\n  \"d\": \"EACehJRd0wfteUAJgaTTJjMSaQqWvzeeHqAMMqxuqxU4\",\r\n  \"i\": \"EACehJRd0wfteUAJgaTTJjMSaQqWvzeeHqAMMqxuqxU4\",\r\n  \"ii\": \"EIqTaQiZw73plMOq8pqHTi9BDgDrrE7iE9v2XfN2Izze\",\r\n  \"s\": \"0\",\r\n  \"c\": [\r\n    \"NB\"\r\n  ],\r\n  \"bt\": \"0\",\r\n  \"b\": [],\r\n  \"n\": \"AGu8jwfkyvVXQ2nqEb5yVigEtR31KSytcpe2U2f7NArr\"\r\n}\r\n``` \r\n\r\nOriginator TEL Issuance Event for Bill Of Lading ACDC\r\n```json\r\n{\r\n  \"v\": \"KERI10JSON0000ed_\",\r\n  \"t\": \"iss\",\r\n  \"d\": \"EBVaw6pCqfMIiZGkA6qevzRUGsxTRuZXxl6YG1neeCGF\",\r\n  \"i\": \"EIO9uC3K6MvyjFD-RB3RYW3dfL49kCyz3OPqv3gi1dek\",\r\n  \"s\": \"0\",\r\n  \"ri\": \"EACehJRd0wfteUAJgaTTJjMSaQqWvzeeHqAMMqxuqxU4\",\r\n  \"dt\": \"2021-06-27T21:26:21.233257+00:00\"\r\n}\r\n```\r\n\r\nShipping Manifest ACDC\r\n```json\r\n{\r\n  \"v\": \"ACDC10JSON0001a5_\",\r\n  \"d\": \"EGdkfXyEtbiicBJ5LPMq0pje3QbxFKWvoYaGdjzBaFRO\",\r\n  \"i\": \"EJvTV8bMQcQi28DfbRP4UIgYN0MfX6OB9vKlrJmT8bIl\",\r\n  \"ri\": \"EJZBT1DJyZiiiQq6F037_LCvh-ghAk51O4K26jkl-BFh\",\r\n  \"s\": \"ENTAoj2oNBFpaniRswwPcca9W1ElEeH2V7ahw68HV4G5\",\r\n  \"a\": {\r\n    \"d\": \"EJCNcfe0h8c896z8Gqu_d-87iaSyrCrmLZ_Y5p4K-HBm\",\r\n    \"dt\": \"2021-06-27T21:26:21.233257+00:00\",\r\n    \"i\": \"EHgwVwQT15OJvilVvW57HE4w0-GPs_Stj2OFoAHZSysY\",\r\n    \"shipName\": \"The Titanic\"\r\n  }\r\n  \"e\": {\r\n    \"d\": \"EIl3MORH3dCdoFOLe71iheqcywJcnjtJtQIYPvAu6DZA\",\r\n    \"billOfLading\": {\r\n      \"n\": \"EIO9uC3K6MvyjFD-RB3RYW3dfL49kCyz3OPqv3gi1dek\",\r\n      \"s\": \"EFgnk_c08WmZGgv9_mpldibRuqFMTQN-rAgtD-TCOwbs\"\r\n    }\r\n  }\r\n}\r\n```\r\n\r\nShipping TEL Credential Registry Inception Event:\r\n```json\r\n{\r\n  \"v\": \"KERI10JSON000113_\",\r\n  \"t\": \"vcp\",\r\n  \"d\": \"EJZBT1DJyZiiiQq6F037_LCvh-ghAk51O4K26jkl-BFh\",\r\n  \"i\": \"EJZBT1DJyZiiiQq6F037_LCvh-ghAk51O4K26jkl-BFh\",\r\n  \"ii\": \"EJvTV8bMQcQi28DfbRP4UIgYN0MfX6OB9vKlrJmT8bIl\",\r\n  \"s\": \"0\",\r\n  \"c\": [\r\n    \"NB\"\r\n  ],\r\n  \"bt\": \"0\",\r\n  \"b\": [],\r\n  \"n\": \"Ax4ZZwfkyvVXQ2nqEb5yVigEtR31KSytcpe2U2f7NArr\"\r\n}\r\n```\r\n\r\nShipping TEL Issuance Event for Shipping Manifest ACDC\r\n\r\n```json\r\n{\r\n  \"v\": \"KERI10JSON0000ed_\",\r\n  \"t\": \"iss\",\r\n  \"d\": \"EI1gJ2RoaSE87_F4_uZRVBSidSEdywT613fUGHM2Hby9\",\r\n  \"i\": \"EGdkfXyEtbiicBJ5LPMq0pje3QbxFKWvoYaGdjzBaFRO\",\r\n  \"s\": \"0\",\r\n  \"ri\": \"EJZBT1DJyZiiiQq6F037_LCvh-ghAk51O4K26jkl-BFh\",\r\n  \"dt\": \"2021-06-27T21:26:21.233257+00:00\"\r\n}\r\n```\r\n\r\nOriginator Transfer Event from Bill of Lading to Shipping Manifest\r\n```json\r\n{\r\n  \"v\": \"KERI10JSON0000ed_\",\r\n  \"t\": \"txr\",\r\n  \"d\": \"EJZBT1DJyZiiiQq6F037_LCvh-ghAk51O4K26jkl-BFh\",\r\n  \"i\": \"EIO9uC3K6MvyjFD-RB3RYW3dfL49kCyz3OPqv3gi1dek\",\r\n  \"s\": \"1\",\r\n  \"ri\": \"EACehJRd0wfteUAJgaTTJjMSaQqWvzeeHqAMMqxuqxU4\",\r\n  \"dt\": \"2021-06-27T21:26:21.233257+00:00\"\r\n  \"a\": [\r\n    {\r\n      \"i\": \"EGdkfXyEtbiicBJ5LPMq0pje3QbxFKWvoYaGdjzBaFRO\",\r\n      \"ri\": \"EJZBT1DJyZiiiQq6F037_LCvh-ghAk51O4K26jkl-BFh\"\r\n    }\r\n  ]\r\n}\r\n```",
+          "createdAt": "2023-08-08T22:54:37Z",
+          "updatedAt": "2023-08-08T22:56:00Z"
+        },
+        {
+          "author": "SmithSamuelM",
+          "authorAssociation": "NONE",
+          "body": "I think after some more thought, that we may need to include the TEL SAID (VCP) of the next TEL in the Transfer Event in the prior TEL.  This means that a TEL registry that hosts TELs with transfer semantics would benefit from a database that directly indexes the TEL SAIDs so that a validator could query the TEL SAID as the duplicity resides in the TEL Transfer chain of events not merely in the ACDC.\r\n\r\n\r\nDiscussion:  \r\n\r\nSeals anchored in KELs are not searchable for the purpose of determining duplicity. By design anchors are meant to be information hiding. They are digests and those digest could be blinded in some way. For example, a digest could be anchored in a cryptographic accumulator such as Merkle tree and only the Merkle root digest appears in the KEL. Likewise a given digest could be blinded with a blinding factor (salty nonce). In either case the same data could be anchored multiple times in a given KEL in a way that no validator could discover that there were multiple anchors. A malicious controller of a KEL could thereby be undetectably duplicitous wrt to anchoring the same information. Therefore, an KEL anchor must not have a uniqueness semantic as it would be unenforceable by a validator (watcher, backer, or verifier).\r\n\r\nExisting revocation registries do not have such a semantic and the use cases have counter incentives for the Issuer of an ACDC to create duplicitous TELS for a given ACDC.  But for a transfer registry this may no longer be true.  Therefore duplicity detection must be with respect to a specific TEL and therefore the TEL's SAID. Validator's must also be able to detect duplicity with respect to different events or versions of events in a given TEL. The same TEL as identified by its SAID must never have different events. Any validator (watcher, backer, or verifier) that sees different events for the same TEL would then have provable evidence of duplicity and therefore not trust.  Therefore the commitment by the transfer event must also be to the next TEL SAID and not merely to to the ACDC in the issuance event in the next TEL SAID. \r\n\r\nIf the commitment is only to the ACDC then a given TEL issuer could hide the fact that it has multiple TELs for the same ACDC and therefore hide its duplicity. For example it could have a unique OOBI host for each TEL so that a query of the ACDC-to-TEL index on each host returns a different TEL. A validator would have to know about all those hosts to detect duplicity and could not infer that there were multiple hosts merely from following and validating any given TEL chain. So Watchers would have to watch not TELs but ACDCs. Given that the same ACDC could be referenced as an edge in any number of other ACDCs then merely finding an ACDC in another TEL host is not necessarily evidence of duplicity. There are non-duplicitous uses of ACDCs in multiple TELs.  Consequently duplicity detection must be at the TEL level not the ACDC level.\r\n\r\nThis is analogous to KEL duplicity. The same key state could be used by multiple KELs. Duplicity is not reusing keys in multiple KELs but to have two versions of the KEL for the same AID. Likewise for TEL transfer, duplicity is to have two versions of the TEL for the same TEL SAID where in both case a differing version is detectable by a different set of events in any two versions of a KEL/TEL.  \r\n\r\nConclusion the transfer event MUST include the SAID of the next TEL.",
+          "createdAt": "2023-08-12T13:36:46Z",
+          "updatedAt": "2023-08-13T15:02:06Z"
+        },
+        {
+          "author": "SmithSamuelM",
+          "authorAssociation": "NONE",
+          "body": "Given the next TEL's SAID given by its `iss` event SAID is derived from the next ACDC's SAID that appears in the `iss` event then there is not a requirement to include the ACDC SAID in the Transfer event. \r\n\r\n\r\nACDC tracking for duplicity is problematic. This is similar to the problem that the Certificate Transparency project has. A given CA DNS certificate is not required to be unique. Existence of multiple certificates for the same DNS is not provable evidence of duplicity but merely evidence of possible duplicity. More investigation is required to determine actual duplicity and a validator may not be able to ascertain duplicity on its own, thereby breaking end-verifiability. In DNS/CA a given DNS can have multiple valid Certs from different CAs with no duplicity. Likewise with ACDCs, a validator seeing the appearance of the same ACDC in multiple TELS, especially by reference may not be able to ascertain that this constitutes duplicity on the behalf of the issuer of that ACDC. \r\n\r\nA transfer semantic on a TRansfer registry as a TEL Chain (Chain of Transfer TELS) muast have a special semantic that makes singularity (unique) control over the ability to append to the TEL Chain end verifiable.\r\n\r\nLikewise that appearance of an ACDC in multiple TEL Registry Databases is not provable evidence of duplicity but merely possible. Whereas a different set of events for a given TEL transfer chain where the next TEL SAID is part of the event is provable evidence of duplicity.",
+          "createdAt": "2023-08-12T13:55:16Z",
+          "updatedAt": "2023-08-13T15:09:45Z"
+        },
+        {
+          "author": "SmithSamuelM",
+          "authorAssociation": "NONE",
+          "body": "One more thing.  A forward link to the TEL identifier does not stop a malicious next TEL from inducing more than one Prior TEL from transfering to the same next TEL. Merely pointing back to the prior ACDC does not remove this ambiguity completely as the same ACDC may be referenced in multiple TELs. The ACDC itself only references the TEL registry not the TEL itself. This creates ambiguity that may be exploitable. \r\n\r\nTo remove this ambiguity the next TEL must include the SAID of the prior TEL either at the TEL event top level or via an extra property on the edge of the next tel that is pointing back to the prior ACDC.\r\n\r\nOne additional consideration is that a valid use case is a merge of more than one prior TEL into one Next TEL. Each merged TEL must be separately referenced so as to unequivocally indicate that it is a merger and not duplicity.  \r\n\r\nThis means that if the prior TEL SAID is to be put at the top level of the next TEL event, it must be a list of TEL SAIDs not a single SAID value.\r\n\r\nIf instead the prior TEL SAID is an extra property on the ACDC Edge the points back to the ACDC in a prior tel it can be a single value because ACDCs already have a mechanism for having multiple edges.\r\n\r\nI think to keep the ACDC validation logic simple, that adding a priors field whose value is a list of one or more TEL saids to the 'transferable issuance\" event of a next TEL is the simplest from a logic perspective. It does however mean we have to have a new type of issance event for TELs. This is similar to the reason we have both and icp and dip events for KELs where the DIP is exclusive to delegated aids. And a new tis  (transferable (into) issuance) events in tels. Or we could version PTEL and add the priors field to all Iss events and an empty priors list just means is was not transferable into.",
+          "createdAt": "2023-08-12T17:35:46Z",
+          "updatedAt": "2023-08-12T17:35:46Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOKAikBc5W1GV_",
+      "title": "adds migration note",
+      "url": "https://github.com/trustoverip/tswg-ptel-specification/pull/1",
+      "state": "MERGED",
+      "author": "m00sey",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Add a reference to the previous WebOfTrust repository.",
+      "createdAt": "2023-07-31T17:57:34Z",
+      "updatedAt": "2023-08-01T20:03:29Z",
+      "baseRepository": "trustoverip/tswg-ptel-specification",
+      "baseRefName": "main",
+      "baseRefOid": "83a187800a87bfe79e83cd5bb6d5d4ffa9f72a9f",
+      "headRepository": "m00sey/tswg-ptel-specification",
+      "headRefName": "main",
+      "headRefOid": "e2104eab54229423b3f6b742ff727c5c533159e8",
+      "closedAt": "2023-08-01T20:03:29Z",
+      "mergedAt": "2023-08-01T20:03:29Z",
+      "mergedBy": "m00sey",
+      "mergeCommit": {
+        "oid": "959595bfe711403eb4854dabf3e8c9a7c4313191"
+      },
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
